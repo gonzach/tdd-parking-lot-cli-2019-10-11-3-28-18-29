@@ -14,11 +14,19 @@ public class ParkingBoy {
         return this.parkingLot.fetchTicket(car);
     }
 
+    public void setLastErrorMessage(String lastErrorMessage) {
+        this.lastErrorMessage = lastErrorMessage;
+    }
+
     public Car fetch(ParkingTicket ticket) {
+        if (parkingLot.fetchCar(ticket) == null ){
+            setLastErrorMessage("Unrecognized parking ticket");
+            getLastErrorMessage();
+        }
         return parkingLot.fetchCar(ticket);
     }
 
     public String getLastErrorMessage() {
-        return lastErrorMessage;
+       return lastErrorMessage;
     }
 }

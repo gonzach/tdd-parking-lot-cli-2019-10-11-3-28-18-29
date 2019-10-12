@@ -4,6 +4,7 @@ import com.oocl.cultivation.Car;
 import com.oocl.cultivation.ParkingBoy;
 import com.oocl.cultivation.ParkingLot;
 import com.oocl.cultivation.ParkingTicket;
+import javafx.beans.binding.BooleanExpression;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,10 +23,9 @@ class ParkingBoyFacts {
 
     @Test
     void should_parking_boy_fetch_the_car() {
-        ParkingTicket parkingTicket = new ParkingTicket();
         ParkingLot parkingLot = new ParkingLot();
         ParkingBoy parkingboy = new ParkingBoy(parkingLot);
-        parkingTicket = parkingboy.park(new Car());
+        ParkingTicket parkingTicket = parkingboy.park(new Car());
 
         Car car = parkingboy.fetch(parkingTicket);
 
@@ -34,19 +34,19 @@ class ParkingBoyFacts {
 
     @Test
     void should_customer_check_ticket() {
-
         ParkingLot parkinglot = new ParkingLot();
         ParkingBoy parkingBoy = new ParkingBoy(parkinglot);
+
         Car car = parkingBoy.fetch(new ParkingTicket());
+
         assertNull(car);
     }
 
     @Test
     void should_fetch_no_car() {
-        ParkingTicket parkingTicket = new ParkingTicket();
         ParkingLot parkingLot = new ParkingLot();
         ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
-        parkingTicket = parkingBoy.park(new Car());
+        ParkingTicket parkingTicket = parkingBoy.park(new Car());
 
         Car car = parkingBoy.fetch(parkingTicket);
 
@@ -57,7 +57,6 @@ class ParkingBoyFacts {
     void should_check_parking_lot_capacity() {
         ParkingLot parkingLot = new ParkingLot();
         ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
-
         for(int i = 0; i< 10; i++){
             parkingBoy.park(new Car());
         }
@@ -67,4 +66,18 @@ class ParkingBoyFacts {
 
         assertNull(parkingTicket);
     }
+
+    @Test
+    void should_get_response_message_if_customer_gives_wrong_ticket() {
+        ParkingLot parkinglot = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkinglot);
+
+        Car car = parkingBoy.fetch(new ParkingTicket());
+
+       assertEquals(parkingBoy.getLastErrorMessage(), "Unrecognized parking ticket");
+    }
+
+
+
+
 }

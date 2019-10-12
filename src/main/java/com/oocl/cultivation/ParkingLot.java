@@ -30,6 +30,7 @@ public class ParkingLot {
     }
 
     public Car fetchCar(ParkingTicket ticket) {
+
         return cars.get(ticket);
     }
 
