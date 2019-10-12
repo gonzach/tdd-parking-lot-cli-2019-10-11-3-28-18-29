@@ -105,8 +105,9 @@ class ParkingBoyFacts {
         ParkingLot parkingLot = new ParkingLot();
         ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
 
-        parkingBoy.fetch(new ParkingTicket());
+        Car fetchCar = parkingBoy.fetch(null);
 
+        assertNull(fetchCar);
         assertEquals(parkingBoy.getLastErrorMessage(), "Please provide your parking ticket.");
     }
 
