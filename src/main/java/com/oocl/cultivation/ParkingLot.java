@@ -6,7 +6,6 @@ import java.util.Map;
 public class ParkingLot {
     private final int capacity;
     private Map<ParkingTicket, Car> cars = new HashMap<>();
-    private static final int GROW_FACTOR = 2;
 
     public ParkingLot() {
         this(10);
@@ -25,6 +24,8 @@ public class ParkingLot {
         ParkingTicket parkingTicket = new ParkingTicket();
         if ( getAvailableParkingPosition()  == 0 ) {
             return null;
+        } else if ( getAvailableParkingPosition() > 0) {
+            cars.put(parkingTicket, car);
         }
         cars.put(parkingTicket, car);
         return parkingTicket;
@@ -36,5 +37,10 @@ public class ParkingLot {
         cars.remove(ticket);
         return car;
     }
+
+    public Map<ParkingTicket, Car> getCars() {
+        return cars;
+    }
+
 
 }

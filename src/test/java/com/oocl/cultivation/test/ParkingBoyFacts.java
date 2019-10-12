@@ -5,6 +5,7 @@ import com.oocl.cultivation.ParkingBoy;
 import com.oocl.cultivation.ParkingLot;
 import com.oocl.cultivation.ParkingTicket;
 import javafx.beans.binding.BooleanExpression;
+import jdk.nashorn.internal.ir.LiteralNode;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -115,7 +116,7 @@ class ParkingBoyFacts {
     @Test
     void should_park_cars_to_the_second_parking_lot_when_the_first_parking_lot_is_full() {
         ParkingLot parkingLot = new ParkingLot();
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot) ;
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
         for(int i = 0; i< 10; i++){
             parkingBoy.park(new Car());
         }
@@ -126,4 +127,22 @@ class ParkingBoyFacts {
         assertNotNull(car);
         assertEquals(parkingBoy.getLastErrorMessage(), "Not enough position.");
     }
+
+    @Test
+    void should_parking_boy_will_park_cars_to_the_second_parking_lot_when_the_first_parking_lot_is_full() {
+        ParkingLot parkingLot1 = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot1);
+        for(int i = 0; i< 10; i++){
+            parkingBoy.park(new Car());
+        }
+
+        Car car = new Car();
+        ParkingLot parkingLot2 = new ParkingLot();
+        parkingBoy = new ParkingBoy(parkingLot2);
+        parkingBoy.park(car);
+
+        assertEquals(parkingLot2.getCars().containsValue(car), Boolean.TRUE);
+    }
+
+
 }
