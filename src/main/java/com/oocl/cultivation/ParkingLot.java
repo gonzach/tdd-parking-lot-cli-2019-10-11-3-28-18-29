@@ -6,6 +6,7 @@ import java.util.Map;
 public class ParkingLot {
     private final int capacity;
     private Map<ParkingTicket, Car> cars = new HashMap<>();
+    private static final int GROW_FACTOR = 2;
 
     public ParkingLot() {
         this(10);
@@ -29,9 +30,11 @@ public class ParkingLot {
         return parkingTicket;
     }
 
-    public Car fetchCar(ParkingTicket ticket) {
 
-        return cars.get(ticket);
+    public Car fetchCar(ParkingTicket ticket) {
+        Car car = cars.get(ticket);
+        cars.remove(ticket);
+        return car;
     }
 
 }

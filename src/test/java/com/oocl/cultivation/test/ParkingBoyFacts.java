@@ -11,46 +11,68 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ParkingBoyFacts {
     @Test
-    void should_park_car_to_parking_lot_by_parking_boy() {
-        Car car = new Car();
+    void should_park_car_to_parking_lot_by_parking_boy_and_return_parking_ticket() {
         ParkingLot parkingLot = new ParkingLot();
         ParkingBoy parkingboy = new ParkingBoy(parkingLot);
+        Car car1 = new Car();
+        ParkingTicket car1_parkingTicket = parkingboy.park(car1);
 
-        ParkingTicket parkingTicket = parkingboy.park(car);
-
-        assertNotNull(parkingTicket);
+        assertNotNull(car1_parkingTicket);
     }
 
     @Test
-    void should_parking_boy_fetch_the_car() {
+    void should_customer_give_the_parking_ticket_back_to_parking_boy_to_fetch_the_car() {
         ParkingLot parkingLot = new ParkingLot();
         ParkingBoy parkingboy = new ParkingBoy(parkingLot);
-        ParkingTicket parkingTicket = parkingboy.park(new Car());
+        Car car1 = new Car();
+        ParkingTicket car1_parkingTicket = parkingboy.park(car1);
 
-        Car car = parkingboy.fetch(parkingTicket);
+        Car fetchedCar = parkingboy.fetch(car1_parkingTicket);
 
-        assertNotNull(car);
+        assertNotNull(fetchedCar);
     }
 
     @Test
-    void should_customer_check_ticket() {
-        ParkingLot parkinglot = new ParkingLot();
-        ParkingBoy parkingBoy = new ParkingBoy(parkinglot);
-
-        Car car = parkingBoy.fetch(new ParkingTicket());
-
-        assertNull(car);
-    }
-
-    @Test
-    void should_fetch_no_car() {
+    void should_parking_boy_can_park_multiple_cars_into_the_parking_lot() {
         ParkingLot parkingLot = new ParkingLot();
         ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
-        ParkingTicket parkingTicket = parkingBoy.park(new Car());
 
-        Car car = parkingBoy.fetch(parkingTicket);
+        Car car1 = new Car();
+        ParkingTicket car1_parkingTicket = parkingBoy.park(car1);
+        Car fetchedCar1 = parkingBoy.fetch(car1_parkingTicket);
 
-        assertNotNull(car);
+        Car car2 = new Car();
+        ParkingTicket car2_parkingTicket = parkingBoy.park(car2);
+        Car fetchedCar2 = parkingBoy.fetch(car2_parkingTicket);
+
+        assertEquals( fetchedCar1, car1);
+        assertEquals( fetchedCar2, car2);
+    }
+
+    @Test
+    void should_check_if_customer_gives_wrong_ticket_then_no_car_should_be_fetcher() {
+        ParkingLot parkinglot = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkinglot);
+        Car car1 = new Car();
+        ParkingTicket car1_parkingTicket = parkingBoy.park(car1);
+
+        Car fetchedCar = parkingBoy.fetch(new ParkingTicket());
+
+        assertNull(fetchedCar);
+    }
+
+    @Test
+    void should_check_if_customer_gives_used_ticket_then_no_car_should_be_fetcher() {
+        ParkingLot parkinglot = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkinglot);
+        Car car1 = new Car();
+        ParkingTicket parkingTicket = parkingBoy.park(car1);
+
+        Car fetchCar = parkingBoy.fetch(parkingTicket);
+        Car fetchCarAgain = parkingBoy.fetch(parkingTicket);
+
+        assertNotNull(fetchCar);
+        assertNull(fetchCarAgain);
     }
 
     @Test
@@ -61,10 +83,10 @@ class ParkingBoyFacts {
             parkingBoy.park(new Car());
         }
 
-        Car car = new Car();
-        ParkingTicket parkingTicket = parkingBoy.park(car);
+        Car car1 = new Car();
+        ParkingTicket car1_parkingTicket = parkingBoy.park(car1);
 
-        assertNull(parkingTicket);
+        assertNull(car1_parkingTicket);
     }
 
     @Test
@@ -72,7 +94,8 @@ class ParkingBoyFacts {
         ParkingLot parkinglot = new ParkingLot();
         ParkingBoy parkingBoy = new ParkingBoy(parkinglot);
 
-        parkingBoy.fetch(new ParkingTicket());
+        Car car = new Car();
+        parkingBoy.park(new Car());
 
        assertEquals(parkingBoy.getLastErrorMessage(), "Unrecognized parking ticket");
     }
@@ -87,10 +110,12 @@ class ParkingBoyFacts {
         assertEquals(parkingBoy.getLastErrorMessage(), "Please provide your parking ticket.");
     }
 
+
     @Test
-    void should_get_response_message_when_customer_attempt_to_park_a_car_into_parking_lot_without_position() {
+    void should_park_cars_to_the_second_parking_lot_when_the_first_parking_lot_is_full() {
+
         ParkingLot parkingLot = new ParkingLot();
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot) ;
         for(int i = 0; i< 10; i++){
             parkingBoy.park(new Car());
         }
@@ -98,6 +123,6 @@ class ParkingBoyFacts {
         Car car = new Car();
         parkingBoy.park(new Car());
 
-        assertEquals(parkingBoy.getLastErrorMessage(), "Not enough position.");
+        assertNotNull(car);
     }
 }
