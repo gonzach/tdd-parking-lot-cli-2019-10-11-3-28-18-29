@@ -94,10 +94,10 @@ class ParkingBoyFacts {
         ParkingLot parkinglot = new ParkingLot();
         ParkingBoy parkingBoy = new ParkingBoy(parkinglot);
 
-        Car car = new Car();
-        parkingBoy.park(new Car());
+        Car fetchCar = parkingBoy.fetch(new ParkingTicket());
 
-       assertEquals(parkingBoy.getLastErrorMessage(), "Unrecognized parking ticket");
+        assertNull(fetchCar);
+       assertEquals(parkingBoy.getLastErrorMessage(), "Unrecognized parking ticket.");
     }
 
     @Test
