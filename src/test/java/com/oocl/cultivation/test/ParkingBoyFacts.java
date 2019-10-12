@@ -114,7 +114,6 @@ class ParkingBoyFacts {
 
     @Test
     void should_park_cars_to_the_second_parking_lot_when_the_first_parking_lot_is_full() {
-
         ParkingLot parkingLot = new ParkingLot();
         ParkingBoy parkingBoy = new ParkingBoy(parkingLot) ;
         for(int i = 0; i< 10; i++){
@@ -125,5 +124,6 @@ class ParkingBoyFacts {
         parkingBoy.park(new Car());
 
         assertNotNull(car);
+        assertEquals(parkingBoy.getLastErrorMessage(), "Not enough position.");
     }
 }
