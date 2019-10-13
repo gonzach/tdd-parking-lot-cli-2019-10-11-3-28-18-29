@@ -152,6 +152,34 @@ class ParkingBoyFacts {
         assertEquals(3, parkingLot2.countCars());
     }
 
+    @Test
+    void should_super_smart_parking_boys_will_always_park_cars_to_the_parking_lot_which_has_a_larger_available_position_rate() {
+        ParkingLot parkingLot1 = new ParkingLot();
+        ParkingLot parkingLot2 = new ParkingLot();
+        ParkingBoy parkingBoy1 = new ParkingBoy(parkingLot1);
+        ParkingBoy parkingBoy2 = new ParkingBoy(parkingLot2);
+
+        Car car1 = new Car();
+        Car car2 = new Car();
+        Car car3 = new Car();
+        Car car4 = new Car();
+
+        parkingBoy1.park(car1);
+        parkingBoy1.park(car2);
+        parkingBoy1.park(car3);
+        parkingBoy1.park(car4);
+
+        parkingBoy2.park(car1);
+        parkingBoy2.park(car2);
+
+        SuperSmartParkingBoy superSmartParkingBoy = new SuperSmartParkingBoy(parkingLot1);
+        superSmartParkingBoy.addParkingLot(parkingLot2);
+
+        superSmartParkingBoy.park(new Car());
+
+        assertEquals(5, parkingLot1.countCars());
+        assertEquals(2, parkingLot2.countCars());
+    }
 
 
 
