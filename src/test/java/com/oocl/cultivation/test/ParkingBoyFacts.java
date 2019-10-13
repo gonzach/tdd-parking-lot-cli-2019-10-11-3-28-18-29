@@ -1,11 +1,6 @@
 package com.oocl.cultivation.test;
 
-import com.oocl.cultivation.Car;
-import com.oocl.cultivation.ParkingBoy;
-import com.oocl.cultivation.ParkingLot;
-import com.oocl.cultivation.ParkingTicket;
-import javafx.beans.binding.BooleanExpression;
-import jdk.nashorn.internal.ir.LiteralNode;
+import com.oocl.cultivation.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,19 +46,19 @@ class ParkingBoyFacts {
     }
 
     @Test
-    void should_check_if_customer_gives_wrong_ticket_then_no_car_should_be_fetcher() {
+    void should_check_if_customer_gives_wrong_ticket_then_no_car_should_be_fetch() {
         ParkingLot parkinglot = new ParkingLot();
         ParkingBoy parkingBoy = new ParkingBoy(parkinglot);
-        Car car1 = new Car();
-        ParkingTicket car1_parkingTicket = parkingBoy.park(car1);
 
+        Car car1 = new Car();
+        parkingBoy.park(car1);
         Car fetchedCar = parkingBoy.fetch(new ParkingTicket());
 
         assertNull(fetchedCar);
     }
 
     @Test
-    void should_check_if_customer_gives_used_ticket_then_no_car_should_be_fetcher() {
+    void should_check_if_customer_gives_used_ticket_then_no_car_should_be_fetch() {
         ParkingLot parkinglot = new ParkingLot();
         ParkingBoy parkingBoy = new ParkingBoy(parkinglot);
         Car car1 = new Car();
@@ -77,7 +72,7 @@ class ParkingBoyFacts {
     }
 
     @Test
-    void should_check_parking_lot_capacity() {
+    void should_parking_boy_should_not_park_car_if_exceed_capacity() {
         ParkingLot parkingLot = new ParkingLot();
         ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
         for(int i = 0; i< 10; i++){
@@ -98,7 +93,7 @@ class ParkingBoyFacts {
         Car fetchCar = parkingBoy.fetch(new ParkingTicket());
 
         assertNull(fetchCar);
-       assertEquals(parkingBoy.getLastErrorMessage(), "Unrecognized parking ticket.");
+        assertEquals(parkingBoy.getLastErrorMessage(), "Unrecognized parking ticket.");
     }
 
     @Test
@@ -110,22 +105,6 @@ class ParkingBoyFacts {
 
         assertNull(fetchCar);
         assertEquals(parkingBoy.getLastErrorMessage(), "Please provide your parking ticket.");
-    }
-
-
-    @Test
-    void should_park_cars_to_the_second_parking_lot_when_the_first_parking_lot_is_full() {
-        ParkingLot parkingLot = new ParkingLot();
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
-        for(int i = 0; i< 10; i++){
-            parkingBoy.park(new Car());
-        }
-
-        Car car = new Car();
-        parkingBoy.park(new Car());
-
-        assertNotNull(car);
-        assertEquals(parkingBoy.getLastErrorMessage(), "Not enough position.");
     }
 
     @Test
@@ -143,6 +122,37 @@ class ParkingBoyFacts {
 
         assertEquals(parkingLot2.getCars().containsValue(car), Boolean.TRUE);
     }
+
+    @Test
+    void should_smart_parking_boys_will_always_park_cars_to_the_parking_lot_which_contains_more_empty_positions() {
+        ParkingLot parkingLot1 = new ParkingLot();
+        ParkingLot parkingLot2 = new ParkingLot();
+        ParkingBoy parkingBoy1 = new ParkingBoy(parkingLot1);
+        ParkingBoy parkingBoy2 = new ParkingBoy(parkingLot2);
+
+        Car car1 = new Car();
+        Car car2 = new Car();
+        Car car3 = new Car();
+        Car car4 = new Car();
+
+        parkingBoy1.park(car1);
+        parkingBoy1.park(car2);
+        parkingBoy1.park(car3);
+        parkingBoy1.park(car4);
+
+        parkingBoy2.park(car1);
+        parkingBoy2.park(car2);
+
+        SmartParkingBoy smartParkingBoy = new SmartParkingBoy(parkingLot1);
+        smartParkingBoy.addParkingLot(parkingLot2);
+
+        smartParkingBoy.park(new Car());
+
+        assertEquals(4, parkingLot1.countCars());
+        assertEquals(3, parkingLot2.countCars());
+    }
+
+
 
 
 }
